@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FMACEDO — Soluções em Esquadrias</title>
+<meta name="description" content="FMACEDO: soluções completas em esquadrias. Manutenção de persianas integradas, limpeza especializada, fornecimento, instalação e box para banheiro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0b0b0b;
+    --charcoal:#0f0f0f;
+    --charcoal-2:#171717;
+    --charcoal-3:#202020;
+    /* linhas sobre fundo escuro */
+    --line: rgba(255,255,255,0.16);
+    --line-strong: rgba(255,255,255,0.34);
+    /* linhas sobre fundo claro */
+    --rule:#d6d6d4;
+    --rule-strong:#b4b4b2;
+    --white:#ffffff;
+    --off:#f4f4f2;
+    --gray-100:#ebebe9;
+    --silver:#9b9b9b;
+    --silver-light:#d9d9d9;
+    --steel:#111111;
+    --steel-bright:#111111;
+    --ink:#0d0d0d;
+    --muted:#4a4a4a;
+    --max: 1240px;
+    --pad: clamp(1.5rem, 4vw, 4rem);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--white);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  h1,h2,h3{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  section{position:relative;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 var(--pad);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* anel duplo: visível sobre fundo claro e escuro */
+  :focus-visible{outline:2px solid #fff; outline-offset:2px; box-shadow:0 0 0 4px #000;}
+
+  /* ---------- utility: frame corner brackets ---------- */
+  .bracketed{position:relative;}
+  .bracketed::before, .bracketed::after{
+    content:"";
+    position:absolute;
+    width:16px; height:16px;
+    pointer-events:none;
+  }
+  .bracketed::before{
+    top:-1px; left:-1px;
+    border-top:2px solid #fff;
+    border-left:2px solid #fff;
+  }
+  .bracketed::after{
+    bottom:-1px; right:-1px;
+    border-bottom:2px solid #fff;
+    border-right:2px solid #fff;
+  }
+
+  /* ================= HEADER ================= */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:1.1rem 0;
+    transition:background .35s ease, padding .35s ease, border-color .35s ease;
+    border-bottom:1px solid transparent;
+  }
+  header.solid{
+    background:rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    padding:0.75rem 0;
+    border-bottom:1px solid var(--rule);
+  }
+  header .wrap{display:flex; align-items:center; justify-content:space-between; gap:2rem;}
+  .brand{display:flex; align-items:center; gap:.7rem;}
+  .brand-mark{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;
+    font-size:1.55rem;
+    color:var(--ink);
+    letter-spacing:0.01em;
+    line-height:1;
+  }
+  .brand-div{width:1px; height:22px; background:rgba(0,0,0,0.3);}
+  .brand-sub{
+    font-size:.66rem;
+    color:#3a3a3a;
+    letter-spacing:.14em;
+    font-weight:500;
+    line-height:1;
+  }
+  nav.mainnav{display:flex; align-items:center; gap:2.4rem;}
+  nav.mainnav a{
+    font-size:.92rem; color:var(--ink); opacity:.85; font-weight:500;
+    transition:opacity .2s ease;
+  }
+  nav.mainnav a:hover{opacity:1;}
+  nav.mainnav a.nav-cta{opacity:1; color:var(--white);}
+  nav.mainnav a.nav-cta:hover{color:var(--ink);}
+  .nav-cta{
+    display:inline-flex; align-items:center; gap:.5rem;
+    background:var(--ink); color:var(--white);
+    padding:.62rem 1.15rem; font-weight:600; font-size:.86rem;
+    border:1px solid var(--ink);
+    transition:background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .nav-cta:hover{background:transparent; color:var(--ink); border-color:var(--ink);}
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:0; cursor:pointer; padding:6px;}
+  .burger span{width:24px; height:2px; background:var(--ink); display:block;}
+
+  .mobile-panel{
+    display:none;
+    position:fixed; inset:0; z-index:99;
+    background:var(--white);
+    padding:6rem 2rem 2rem;
+    flex-direction:column; gap:1.6rem;
+  }
+  .mobile-panel.open{display:flex;}
+  .mobile-panel a{font-family:'Big Shoulders Display',sans-serif; font-size:1.8rem; color:var(--ink); font-weight:600;}
+  .mobile-panel .nav-cta{align-self:flex-start; margin-top:1rem; color:var(--white); font-family:'Inter',sans-serif; font-size:.95rem;}
+  .mobile-panel .nav-cta:hover{color:var(--ink);}
+
+  /* ================= HERO ================= */
+  .hero{
+    min-height:100vh;
+    display:flex; align-items:center;
+    background:var(--off);
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(90deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.90) 36%, rgba(255,255,255,0.40) 68%, rgba(255,255,255,0.06) 100%),
+      linear-gradient(180deg, rgba(255,255,255,0) 70%, rgba(244,244,242,0.9) 100%),
+      url('https://images.unsplash.com/photo-1660893978186-04bb33247dc0?auto=format&fit=crop&w=2200&q=75');
+    background-size:cover;
+    background-position:center;
+    filter:grayscale(1) contrast(1.08);
+  }
+  .hero-grid{
+    position:absolute; inset:0;
+    opacity:.6;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.055) 0 1px, transparent 1px 8.3%),
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.055) 0 1px, transparent 1px 16.6%);
+  }
+  .hero .wrap{position:relative; z-index:2; padding-top:5rem;}
+  .hero-content{max-width:780px;}
+  .hero-eyebrow-line{
+    display:flex; align-items:center; gap:.8rem; margin-bottom:1.6rem;
+  }
+  .hero-eyebrow-line .stub{width:34px; height:2px; background:var(--ink);}
+  .hero-eyebrow-line span{
+    font-size:.82rem; color:#2f2f2f; font-weight:500; letter-spacing:.03em;
+  }
+  .hero h1{
+    color:var(--ink);
+    font-size:clamp(2.6rem, 6.6vw, 5.3rem);
+    line-height:0.98;
+  }
+  .hero p.lede{
+    color:#262626;
+    font-size:clamp(1.05rem, 1.6vw, 1.28rem);
+    max-width:34ch;
+    margin:1.5rem 0 1.1rem;
+  }
+  .hero p.hero-maint{
+    margin:0 0 2.4rem;
+    max-width:40ch;
+    font-size:1rem; font-weight:600; color:var(--ink);
+    padding-left:1rem; border-left:3px solid var(--ink);
+  }
+  .cta-row{display:flex; gap:1rem; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:.6rem;
+    padding:1rem 1.7rem;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:.88rem;
+    letter-spacing:.02em;
+    cursor:pointer; border:1px solid transparent;
+    transition:background .2s ease, color .2s ease, border-color .2s ease, transform .15s ease;
+  }
+  .btn-primary{background:var(--ink); color:var(--white); border-color:var(--ink);}
+  .btn-primary:hover{background:#2e2e2e; border-color:#2e2e2e; color:var(--white); transform:translateY(-1px);}
+  .btn-outline{border-color:var(--ink); color:var(--ink); background:rgba(255,255,255,0.7);}
+  .btn-outline:hover{background:var(--ink); color:var(--white);}
+  .btn svg{width:18px; height:18px; flex:none;}
+
+  .hero-foot{
+    position:absolute; bottom:2.2rem; left:0; right:0; z-index:2;
+  }
+  .hero-foot .wrap{display:flex; justify-content:space-between; align-items:center; color:#2f2f2f; font-size:.78rem;}
+  .hero-foot .scroll-cue{display:flex; align-items:center; gap:.6rem;}
+  .scroll-line{width:1px; height:32px; background:linear-gradient(var(--ink), transparent); animation:scrolldrop 1.9s ease-in-out infinite;}
+  @keyframes scrolldrop{0%{opacity:0; transform:translateY(-6px);}40%{opacity:1;}100%{opacity:0; transform:translateY(14px);}}
+
+  /* ================= SECTION HEADS ================= */
+  .head-row{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:2rem;
+    margin-bottom:3.2rem; flex-wrap:wrap;
+  }
+  .head-row h2{font-size:clamp(2rem,3.6vw,2.95rem); color:var(--ink);}
+  .head-row .head-note{max-width:34ch; color:var(--muted); font-size:.98rem;}
+  section.on-dark .head-row h2{color:var(--white);}
+  section.on-dark .head-row .head-note{color:var(--silver-light);}
+
+  /* ================= SERVICES ================= */
+  .services{background:var(--white); padding:7rem 0;}
+
+  /* destaque de manutenção */
+  .maint{
+    background:var(--black); color:var(--white);
+    padding:2.2rem clamp(1.4rem,3vw,2.6rem) 0;
+    margin-bottom:1.6rem;
+  }
+  .maint-kicker{
+    margin:0 0 1.8rem;
+    font-family:'Big Shoulders Display',sans-serif; font-weight:700;
+    font-size:clamp(1.5rem,2.8vw,2.1rem); letter-spacing:-0.005em; line-height:1.1;
+    display:flex; align-items:center; gap:.9rem;
+  }
+  .maint-kicker::before{content:""; width:34px; height:3px; background:var(--white); flex:none;}
+  .maint-grid{
+    display:grid; grid-template-columns:repeat(3,1fr);
+    border-top:1px solid var(--line);
+  }
+  .maint-item{padding:1.7rem 1.6rem 2rem 0;}
+  .maint-item + .maint-item{border-left:1px solid var(--line); padding-left:1.8rem;}
+  .maint-num{
+    display:block; font-family:'Big Shoulders Display',sans-serif; font-weight:600;
+    font-size:.95rem; letter-spacing:.12em; color:var(--silver); margin-bottom:.6rem;
+  }
+  .maint-item h3{font-size:1.45rem; font-weight:700; color:var(--white); line-height:1.1; margin-bottom:.5rem;}
+  .maint-item p{margin:0; color:var(--silver-light); font-size:.94rem;}
+
+  .svc-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--rule-strong);
+    border:1px solid var(--rule-strong);
+  }
+  .svc-card{
+    position:relative;
+    background:var(--white);
+    padding:2.6rem 2.2rem;
+    display:flex; flex-direction:column; gap:1.3rem;
+    transition:background .25s ease;
+  }
+  .svc-card:hover{background:var(--off);}
+  .svc-card.key{box-shadow:inset 0 4px 0 var(--ink);}
+  .svc-tag{
+    position:absolute; top:1.1rem; right:1.1rem;
+    background:var(--ink); color:var(--white);
+    font-size:.64rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+    padding:.28rem .6rem;
+  }
+  .svc-icon{width:44px; height:44px; color:var(--ink); flex:none;}
+  .svc-icon svg{width:100%; height:100%;}
+  .svc-card h3{font-size:1.32rem; font-weight:600; color:var(--ink); line-height:1.15;}
+  .svc-card p{margin:0; color:var(--muted); font-size:.94rem;}
+
+  /* ================= ABOUT ================= */
+  .about{background:var(--off); padding:7.5rem 0;}
+  .about .wrap{display:grid; grid-template-columns:1.05fr .95fr; gap:4.5rem; align-items:center;}
+  .about h2{font-size:clamp(2rem,3.6vw,2.9rem); margin-bottom:1.6rem; max-width:14ch;}
+  .about p{color:#363636; font-size:1.03rem; max-width:52ch;}
+  .about p + p{margin-top:1.1rem;}
+  .about-stats{display:grid; grid-template-columns:repeat(2,1fr); gap:1.6rem; margin-top:2.4rem;}
+  .stat b{
+    font-family:'Big Shoulders Display',sans-serif; font-size:2.4rem; color:var(--ink); display:block; line-height:1;
+  }
+  .stat span{font-size:.82rem; color:#4a4a4a;}
+
+  .about-panel{
+    position:relative;
+    aspect-ratio:4/5;
+    background:var(--white);
+    border:1px solid var(--ink);
+    overflow:hidden;
+  }
+  .about-panel svg{position:absolute; inset:0; width:100%; height:100%;}
+  .about-panel .tag{
+    position:absolute; left:1.6rem; bottom:1.6rem; z-index:2;
+    color:var(--ink); font-size:.78rem; font-weight:500; letter-spacing:.03em;
+    display:flex; align-items:center; gap:.6rem;
+  }
+  .about-panel .tag .stub{width:22px; height:2px; background:var(--ink);}
+
+  /* ================= DIFFERENTIALS ================= */
+  .differentials{background:var(--black); padding:7.5rem 0;}
+  .diff-grid{
+    display:grid; grid-template-columns:repeat(2,1fr);
+    gap:0;
+    border-top:1px solid var(--line);
+  }
+  .diff-item{
+    display:flex; gap:1.1rem; align-items:flex-start;
+    padding:1.9rem 1.2rem 1.9rem 0;
+    border-bottom:1px solid var(--line);
+  }
+  .diff-item:nth-child(odd){border-right:1px solid var(--line); padding-left:0;}
+  .diff-item:nth-child(even){padding-left:2.4rem;}
+  .diff-mark{
+    flex:none; width:28px; height:28px; margin-top:.15rem;
+    color:var(--white);
+  }
+  .diff-mark svg{width:100%; height:100%;}
+  .diff-item h4{
+    margin:0 0 .3rem; color:var(--white); font-weight:600; font-size:1.06rem; font-family:'Inter',sans-serif;
+  }
+  .diff-item p{margin:0; color:var(--silver-light); font-size:.9rem;}
+
+  /* ================= INSTAGRAM ================= */
+  .insta{
+    background:var(--white);
+    padding:6rem 0;
+    border-bottom:1px solid var(--rule-strong);
+  }
+  .insta .wrap{
+    display:flex; align-items:center; justify-content:space-between; gap:2.5rem; flex-wrap:wrap;
+    padding:3rem clamp(1.5rem,4vw,3.5rem);
+    background:var(--black);
+    position:relative;
+  }
+  .insta-left h2{color:var(--white); font-size:clamp(1.9rem,3.4vw,2.6rem); max-width:16ch;}
+  .insta-left p{color:var(--silver-light); margin-top:.8rem; max-width:40ch; font-size:.98rem;}
+  .insta-handle{
+    display:inline-flex; align-items:center; gap:.7rem;
+    color:var(--white); font-weight:600; font-size:1.05rem;
+    padding:.9rem 1.5rem; border:1px solid var(--line-strong);
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .insta-handle:hover{border-color:var(--white); background:rgba(255,255,255,0.08);}
+  .insta-handle svg{width:20px; height:20px;}
+
+  /* ================= CONTACT ================= */
+  .contact{background:var(--off); padding:7.5rem 0;}
+  .contact .wrap{display:grid; grid-template-columns:1.1fr .9fr; gap:3.5rem;}
+  .contact h2{font-size:clamp(2rem,3.6vw,2.9rem); max-width:12ch;}
+  .contact > .wrap > div:first-child p{color:#363636; font-size:1.05rem; max-width:44ch; margin-top:1.2rem;}
+  .contact-phone{
+    margin-top:2.2rem; display:flex; align-items:center; gap:1rem;
+  }
+  .contact-phone a{
+    font-family:'Big Shoulders Display',sans-serif; font-weight:700;
+    font-size:clamp(1.7rem,3vw,2.3rem); color:var(--ink);
+    border-bottom:2px solid var(--ink); padding-bottom:.1rem;
+  }
+  .contact-phone a:hover{border-color:var(--silver);}
+  .contact-cta{margin-top:2.2rem;}
+
+  .contact-card{
+    background:var(--black); color:var(--white);
+    padding:2.6rem;
+    position:relative;
+  }
+  .contact-card::before, .contact-card::after{
+    content:""; position:absolute; width:10px; height:10px; border-radius:50%;
+    background:var(--silver); opacity:.55;
+  }
+  .contact-card::before{top:14px; left:14px;}
+  .contact-card::after{bottom:14px; right:14px;}
+  .contact-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:1.05rem 0; border-bottom:1px solid var(--line);
+    font-size:.92rem;
+  }
+  .contact-row:last-child{border-bottom:0;}
+  .contact-row .label{color:var(--silver-light);}
+  .contact-row .val{color:var(--white); font-weight:600;}
+
+  /* ================= FOOTER ================= */
+  footer{background:var(--black); border-top:1px solid var(--line); padding:4rem 0 0;}
+  footer .brand-mark{color:var(--white);}
+  .foot-grid{
+    display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:3rem;
+    padding-bottom:3rem; border-bottom:1px solid var(--line);
+  }
+  .foot-brand .brand-mark{font-size:1.7rem;}
+  .foot-brand p{color:var(--silver-light); font-size:.9rem; margin-top:1rem; max-width:32ch;}
+  .foot-col h5{color:var(--white); font-size:.86rem; font-weight:600; margin:0 0 1.1rem; font-family:'Inter',sans-serif; letter-spacing:.02em;}
+  .foot-col a{display:block; color:var(--silver-light); font-size:.9rem; margin-bottom:.7rem; transition:color .2s ease;}
+  .foot-col a:hover{color:var(--white);}
+  .foot-bottom{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;
+    padding:1.6rem 0; color:#a3a3a3; font-size:.8rem;
+  }
+
+  /* ================= FLOATING WHATSAPP ================= */
+  .float-wa{
+    position:fixed; right:1.5rem; bottom:1.5rem; z-index:200;
+    width:60px; height:60px; border-radius:50%;
+    background:var(--black); border:2px solid #fff;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--white);
+    box-shadow:0 8px 24px rgba(0,0,0,0.3);
+    transition:transform .2s ease, border-color .2s ease;
+  }
+  .float-wa svg{width:28px; height:28px;}
+  .float-wa::before{
+    content:""; position:absolute; inset:-8px; border-radius:50%;
+    border:1px solid var(--ink); opacity:0;
+    animation:wa-pulse 2.8s ease-out infinite;
+  }
+  .float-wa:hover{transform:translateY(-3px);}
+  @keyframes wa-pulse{
+    0%{opacity:.55; transform:scale(0.9);}
+    70%{opacity:0; transform:scale(1.35);}
+    100%{opacity:0; transform:scale(1.35);}
+  }
+
+  /* ================= REVEAL (single orchestrated moment per section) ================= */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in{opacity:1; transform:none;}
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width:980px){
+    nav.mainnav{display:none;}
+    .burger{display:flex;}
+    .svc-grid{grid-template-columns:repeat(2,1fr);}
+    .about .wrap{grid-template-columns:1fr; gap:3rem;}
+    .about-panel{aspect-ratio:16/9;}
+    .contact .wrap{grid-template-columns:1fr; gap:2.6rem;}
+    .foot-grid{grid-template-columns:1fr 1fr; gap:2.4rem;}
+    .foot-brand{grid-column:1/-1;}
+  }
+  @media (max-width:760px){
+    .hero-bg{
+      background-image:
+        linear-gradient(180deg, rgba(255,255,255,0.90) 0%, rgba(255,255,255,0.86) 100%),
+        url('https://images.unsplash.com/photo-1660893978186-04bb33247dc0?auto=format&fit=crop&w=2200&q=75');
+    }
+    .maint-grid{grid-template-columns:1fr;}
+    .maint-item{padding:1.4rem 0;}
+    .maint-item + .maint-item{border-left:0; border-top:1px solid var(--line); padding-left:0;}
+  }
+  @media (max-width:640px){
+    .svc-grid{grid-template-columns:1fr;}
+    .diff-grid{grid-template-columns:1fr;}
+    .diff-item:nth-child(odd){border-right:0;}
+    .diff-item:nth-child(even){padding-left:0;}
+    .insta .wrap{flex-direction:column; align-items:flex-start;}
+    .foot-grid{grid-template-columns:1fr;}
+    .float-wa{width:52px; height:52px; right:1rem; bottom:1rem;}
+    .float-wa svg{width:24px; height:24px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header id="siteHeader">
+  <div class="wrap">
+    <a href="#topo" class="brand">
+      <span class="brand-mark">FMACEDO</span>
+      <span class="brand-div"></span>
+      <span class="brand-sub">SOLUÇÕES<br>EM ESQUADRIAS</span>
+    </a>
+    <nav class="mainnav">
+      <a href="#servicos">Serviços</a>
+      <a href="#sobre">A empresa</a>
+      <a href="#diferenciais">Diferenciais</a>
+      <a href="#contato">Contato</a>
+      <a href="https://wa.me/5511987074326?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20FMACEDO." target="_blank" rel="noopener" class="nav-cta">Solicitar orçamento</a>
+    </nav>
+    <button class="burger" id="burgerBtn" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-panel" id="mobilePanel">
+  <a href="#servicos">Serviços</a>
+  <a href="#sobre">A empresa</a>
+  <a href="#diferenciais">Diferenciais</a>
+  <a href="#contato">Contato</a>
+  <a href="https://wa.me/5511987074326?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20FMACEDO." target="_blank" rel="noopener" class="btn btn-primary nav-cta">Falar no WhatsApp</a>
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="topo">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="wrap">
+    <div class="hero-content">
+      <div class="hero-eyebrow-line"><span class="stub"></span><span>Esquadrias de alumínio &amp; vidro · Grande São Paulo</span></div>
+      <h1>Soluções completas em esquadrias.</h1>
+      <p class="lede">Qualidade, segurança e profissionalismo em cada detalhe.</p>
+      <p class="hero-maint">Especialistas em manutenção e cuidado de esquadrias.</p>
+      <div class="cta-row">
+        <a href="#contato" class="btn btn-primary">Solicitar orçamento</a>
+        <a href="https://wa.me/5511987074326?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20FMACEDO." target="_blank" rel="noopener" class="btn btn-outline">
+          <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.02 3C9.4 3 4 8.37 4 14.98c0 2.2.6 4.26 1.63 6.04L4 29l8.2-2.15a12.9 12.9 0 0 0 3.82.58h.01c6.62 0 12.02-5.37 12.02-11.98C28.05 8.37 22.65 3 16.02 3Zm0 21.9h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.79.99 1.01-3.7-.24-.38a9.86 9.86 0 0 1-1.52-5.24C6.06 9.6 10.5 5.16 16.02 5.16c2.66 0 5.17 1.04 7.05 2.93a9.9 9.9 0 0 1 2.92 7.04c0 5.44-4.44 9.87-9.97 9.87Zm5.46-7.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.22 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg>
+          Falar no WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-foot">
+    <div class="wrap">
+      <span>(11) 98707-4326</span>
+      <div class="scroll-cue"><span class="scroll-line"></span><span>role para descobrir mais</span></div>
+      <span>@fmacedoesquadrias</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="services" id="servicos">
+  <div class="wrap">
+    <div class="head-row reveal">
+      <h2>Manutenção e Esquadrias</h2>
+      <p class="head-note">Cuidamos de cada etapa das suas esquadrias — do fornecimento à manutenção — com precisão técnica e acabamento impecável.</p>
+    </div>
+
+    <div class="maint reveal">
+      <p class="maint-kicker">Projeto, instalação e cuidado contínuo.</p>
+      <div class="maint-grid">
+        <div class="maint-item">
+          <span class="maint-num">01</span>
+          <h3>Manutenção e reparos</h3>
+          <p>Serviços especializados para o perfeito funcionamento de persianas integradas e esquadrias.</p>
+        </div>
+        <div class="maint-item">
+          <span class="maint-num">02</span>
+          <h3>Projetos e instalação</h3>
+          <p>Fornecimento e instalação realizados com cuidado, precisão e profissionalismo.</p>
+        </div>
+        <div class="maint-item">
+          <span class="maint-num">03</span>
+          <h3>Cuidado contínuo</h3>
+          <p>Limpeza e conservação para manter suas esquadrias sempre impecáveis.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="svc-grid reveal">
+      <div class="svc-card key">
+        <span class="svc-tag">Especialidade</span>
+        <div class="svc-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="7" width="30" height="34" rx="1"/><line x1="9" y1="14" x2="39" y2="14"/><line x1="9" y1="20" x2="39" y2="20"/><line x1="9" y1="26" x2="39" y2="26"/><line x1="9" y1="32" x2="39" y2="32"/><circle cx="43" cy="7" r="1.4" fill="currentColor" stroke="none"/><line x1="43" y1="9" x2="43" y2="39"/></svg>
+        </div>
+        <h3>Manutenção de Persianas Integradas</h3>
+        <p>Serviços especializados para garantir o perfeito funcionamento das suas persianas.</p>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="9" width="26" height="30" rx="1"/><line x1="8" y1="17" x2="34" y2="17"/><line x1="21" y1="9" x2="21" y2="39"/><path d="M35 30c3 2 5 5 5 8a4 4 0 0 1-8 0c0-3 2-6 3-8Z"/></svg>
+        </div>
+        <h3>Limpeza Especializada</h3>
+        <p>Limpeza profissional para manter suas estruturas sempre impecáveis.</p>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="6" width="36" height="36" rx="1"/><line x1="24" y1="6" x2="24" y2="42"/><line x1="6" y1="24" x2="42" y2="24"/></svg>
+        </div>
+        <h3>Fornecimento de Esquadrias</h3>
+        <p>Soluções de qualidade para diferentes projetos.</p>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="10" width="24" height="28" rx="1"/><line x1="19" y1="10" x2="19" y2="38"/><path d="M32 34.5 40 26.5a2.6 2.6 0 0 0-3.7-3.7l-8 8 -1 4.7Z"/></svg>
+        </div>
+        <h3>Instalação Profissional</h3>
+        <p>Instalação realizada com cuidado, precisão e profissionalismo.</p>
+      </div>
+
+      <div class="svc-card key">
+        <span class="svc-tag">Especialidade</span>
+        <div class="svc-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="9" width="26" height="30" rx="1"/><line x1="19" y1="9" x2="19" y2="39"/><circle cx="36" cy="30" r="6"/><path d="M36 22v2.4M36 33.6V36M28.4 30h2.4M41.2 30h2.4M30.5 24.5l1.7 1.7M39.8 33.8l1.7 1.7M30.5 35.5l1.7-1.7M39.8 26.2l1.7-1.7"/></svg>
+        </div>
+        <h3>Manutenção de Esquadrias</h3>
+        <p>Serviços para conservar e garantir o funcionamento correto das suas esquadrias.</p>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 41V13a2 2 0 0 1 2-2h26" /><rect x="10" y="15" width="24" height="26"/><line x1="22" y1="15" x2="22" y2="41"/><path d="M34 20c3 0 5 2 5 5v16"/></svg>
+        </div>
+        <h3>Box para Banheiro</h3>
+        <p>Fornecimento, instalação e manutenção de boxes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="about" id="sobre">
+  <div class="wrap">
+    <div class="reveal">
+      <h2>FMACEDO: qualidade em cada detalhe.</h2>
+      <p>A FMACEDO oferece soluções completas em esquadrias para projetos residenciais e comerciais, unindo técnica apurada, materiais de qualidade e um atendimento próximo a cada cliente.</p>
+      <p>Cuidamos de cada etapa — fornecimento, instalação e manutenção — com o rigor que o alumínio e o vidro exigem, entregando esquadrias que funcionam com precisão e duram por muitos anos.</p>
+      <div class="about-stats">
+        <div class="stat"><b>360°</b><span>Fornecimento, instalação e manutenção</span></div>
+        <div class="stat"><b>100%</b><span>Foco em qualidade e segurança</span></div>
+      </div>
+    </div>
+    <div class="about-panel reveal">
+      <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Desenho técnico de uma esquadria de alumínio">
+        <rect width="400" height="500" fill="#ffffff"/>
+        <g stroke="#cfcfcd" stroke-width="1">
+          <line x1="0" y1="125" x2="400" y2="125"/>
+          <line x1="0" y1="250" x2="400" y2="250"/>
+          <line x1="0" y1="375" x2="400" y2="375"/>
+          <line x1="100" y1="0" x2="100" y2="500"/>
+          <line x1="200" y1="0" x2="200" y2="500"/>
+          <line x1="300" y1="0" x2="300" y2="500"/>
+        </g>
+        <rect x="98" y="123" width="204" height="254" fill="#f4f4f2" stroke="#0d0d0d" stroke-width="6"/>
+        <rect x="112" y="137" width="176" height="226" fill="none" stroke="#7a7a7a" stroke-width="2"/>
+        <circle cx="98" cy="123" r="4" fill="#0d0d0d"/>
+        <circle cx="302" cy="377" r="4" fill="#0d0d0d"/>
+        <g stroke="#5a5a5a" stroke-width="1.5">
+          <line x1="30" y1="30" x2="70" y2="30"/>
+          <line x1="30" y1="30" x2="30" y2="70"/>
+          <line x1="370" y1="470" x2="330" y2="470"/>
+          <line x1="370" y1="470" x2="370" y2="430"/>
+        </g>
+      </svg>
+      <div class="tag"><span class="stub"></span>Precisão técnica, do projeto à instalação</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DIFFERENTIALS ================= -->
+<section class="differentials on-dark" id="diferenciais">
+  <div class="wrap">
+    <div class="head-row reveal">
+      <h2>Por que escolher a FMACEDO?</h2>
+      <p class="head-note">O que diferencia nosso trabalho é o mesmo que garante o resultado: atenção aos detalhes, do primeiro contato à entrega final.</p>
+    </div>
+    <div class="diff-grid reveal">
+      <div class="diff-item">
+        <span class="diff-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12.5 9.5 18 20 6"/></svg></span>
+        <div><h4>Atendimento profissional</h4><p>Comunicação clara e próxima em todas as etapas do projeto.</p></div>
+      </div>
+      <div class="diff-item">
+        <span class="diff-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12.5 9.5 18 20 6"/></svg></span>
+        <div><h4>Serviços especializados</h4><p>Equipe treinada especificamente para esquadrias e persianas.</p></div>
+      </div>
+      <div class="diff-item">
+        <span class="diff-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12.5 9.5 18 20 6"/></svg></span>
+        <div><h4>Qualidade e segurança</h4><p>Materiais e procedimentos que priorizam durabilidade e segurança.</p></div>
+      </div>
+      <div class="diff-item">
+        <span class="diff-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12.5 9.5 18 20 6"/></svg></span>
+        <div><h4>Soluções completas</h4><p>Do fornecimento à manutenção, tudo com um único fornecedor.</p></div>
+      </div>
+      <div class="diff-item">
+        <span class="diff-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12.5 9.5 18 20 6"/></svg></span>
+        <div><h4>Profissionais qualificados</h4><p>Experiência prática aplicada a cada projeto executado.</p></div>
+      </div>
+      <div class="diff-item">
+        <span class="diff-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12.5 9.5 18 20 6"/></svg></span>
+        <div><h4>Compromisso com cada projeto</h4><p>Cuidado no detalhe, do orçamento à entrega final.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INSTAGRAM ================= -->
+<section class="insta">
+  <div class="wrap reveal">
+    <div class="insta-left">
+      <h2>Acompanhe nossos projetos</h2>
+      <p>Confira instalações, acabamentos e bastidores do nosso trabalho todos os dias no Instagram.</p>
+    </div>
+    <a href="https://www.instagram.com/fmacedoesquadrias" target="_blank" rel="noopener" class="insta-handle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
+      @fmacedoesquadrias
+    </a>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact" id="contato">
+  <div class="wrap">
+    <div class="reveal">
+      <h2>Entre em contato</h2>
+      <p>Solicite seu orçamento e fale com a nossa equipe.</p>
+      <div class="contact-phone">
+        <a href="https://wa.me/5511987074326?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20FMACEDO." target="_blank" rel="noopener">(11) 98707-4326</a>
+      </div>
+      <div class="contact-cta cta-row">
+        <a href="https://wa.me/5511987074326?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20FMACEDO." target="_blank" rel="noopener" class="btn" style="background:var(--ink); color:var(--white);">
+          <svg viewBox="0 0 32 32" fill="currentColor" style="width:18px;height:18px;"><path d="M16.02 3C9.4 3 4 8.37 4 14.98c0 2.2.6 4.26 1.63 6.04L4 29l8.2-2.15a12.9 12.9 0 0 0 3.82.58h.01c6.62 0 12.02-5.37 12.02-11.98C28.05 8.37 22.65 3 16.02 3Zm0 21.9h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.79.99 1.01-3.7-.24-.38a9.86 9.86 0 0 1-1.52-5.24C6.06 9.6 10.5 5.16 16.02 5.16c2.66 0 5.17 1.04 7.05 2.93a9.9 9.9 0 0 1 2.92 7.04c0 5.44-4.44 9.87-9.97 9.87Zm5.46-7.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.22 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg>
+          Falar no WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-card bracketed reveal">
+      <div class="contact-row"><span class="label">WhatsApp</span><span class="val">(11) 98707-4326</span></div>
+      <div class="contact-row"><span class="label">Instagram</span><span class="val">@fmacedoesquadrias</span></div>
+      <div class="contact-row"><span class="label">Atendimento</span><span class="val">Seg. a Sáb.</span></div>
+      <div class="contact-row"><span class="label">Atuação</span><span class="val">Residencial &amp; Comercial</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="brand-mark">FMACEDO</span>
+        <p>Soluções em Esquadrias — fornecimento, instalação e manutenção de esquadrias, persianas integradas e box para banheiro.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Navegação</h5>
+        <a href="#servicos">Serviços</a>
+        <a href="#sobre">A empresa</a>
+        <a href="#diferenciais">Diferenciais</a>
+        <a href="#contato">Contato</a>
+      </div>
+      <div class="foot-col">
+        <h5>Contato</h5>
+        <a href="https://wa.me/5511987074326" target="_blank" rel="noopener">WhatsApp: (11) 98707-4326</a>
+        <a href="https://www.instagram.com/fmacedoesquadrias" target="_blank" rel="noopener">Instagram: @fmacedoesquadrias</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> FMACEDO — Soluções em Esquadrias. Todos os direitos reservados.</span>
+      <span>Grande São Paulo, SP</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= FLOATING WHATSAPP ================= -->
+<a class="float-wa" href="https://wa.me/5511987074326?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20com%20a%20FMACEDO." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16.02 3C9.4 3 4 8.37 4 14.98c0 2.2.6 4.26 1.63 6.04L4 29l8.2-2.15a12.9 12.9 0 0 0 3.82.58h.01c6.62 0 12.02-5.37 12.02-11.98C28.05 8.37 22.65 3 16.02 3Zm0 21.9h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.79.99 1.01-3.7-.24-.38a9.86 9.86 0 0 1-1.52-5.24C6.06 9.6 10.5 5.16 16.02 5.16c2.66 0 5.17 1.04 7.05 2.93a9.9 9.9 0 0 1 2.92 7.04c0 5.44-4.44 9.87-9.97 9.87Zm5.46-7.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.22 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg>
+</a>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // header solid on scroll
+  const header = document.getElementById('siteHeader');
+  const onScroll = () => {
+    if(window.scrollY > 40){ header.classList.add('solid'); }
+    else{ header.classList.remove('solid'); }
+  };
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+
+  // mobile menu
+  const burger = document.getElementById('burgerBtn');
+  const panel = document.getElementById('mobilePanel');
+  burger.addEventListener('click', () => {
+    const open = panel.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    panel.classList.remove('open');
+    burger.setAttribute('aria-expanded', false);
+  }));
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  }, {threshold:0.15});
+  revealEls.forEach(el => io.observe(el));
+
+</script>
+
+</body>
+</html>
